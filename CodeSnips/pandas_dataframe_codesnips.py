@@ -47,11 +47,22 @@ df.dropna()
 cols = list(df.columns)
 cols.remove(<THIS_COL>)
 cols.inser(<THIS_COL>, 0)
-df = df.reindex(columns=cols
+df = df.reindex(columns=cols)
 
 # Rename Columns
 new_cols = {"old_1": "new_1", "old_2", "new_2",}
 df.rename(colums=new_cols, inplace=True)
+
+# Pivoting Columns 
+# USE THIS pivot table allows you to treat each of the columns as a single aggregated column 
+# acted upon by the agg function immediately.
+df.pivot_table(
+    index="user_id",
+    columns="activity_type",
+    values="count",
+    aggfunc="sum",
+    fill_value=0
+)
 
 # ReMap Cat Vars
 df[<CATVAR>] = df[<CAT_VAR>].map({"catvar1": "CV1", "catvar2": "CV2"...})
@@ -64,5 +75,13 @@ pd.get_dummies(df[<CAT_VAR>], prefix=<CAT_VAR>)
 # These are keywords specifying on what exactly we will be joining. In this case, on the index.
 df1.merge(df2, left_index=True, right_index=True)
 
-# Series to Numpy
+
+# Rolling Window
+df.rolling(window=3).sum("activity_count")
+
+# Reset Index 
+df.groupby("user_id").<group_action>
+df.reset_index()[["user_id", "activity_count"]]
+
+# Converting Series to Numpy
 e_train.to_numpy()
